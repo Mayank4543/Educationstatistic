@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State-wise Literacy Rate</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script> <!-- Tailwind CSS -->
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-gray-100 text-gray-900">
+
+    <!-- Navbar -->
+    <nav class="bg-blue-600 p-4 text-white text-center text-2xl font-semibold shadow-md">
+        State-wise Literacy Rate
+    </nav>
+
+    <!-- Chart Container -->
+    <div class="container mx-auto p-8">
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-xl font-semibold text-gray-800 mb-4 text-center">📊 Interactive Literacy Rate Chart</h2>
+            <div id="chart"></div>
+        </div>
+    </div>
+
+    <script>
+        fetch('/get_chart_data')
+            .then(response => response.json())
+            .then(data => {
+                Plotly.newPlot('chart', data.data, {
+                    ...data.layout,
+                    title: { text: 'State-wise Literacy Rate', font: { size: 20, color: '#333' } },
+                    xaxis: { title: 'State', tickangle: -45, tickfont: { size: 12, color: '#555' } },
+                    yaxis: { title: 'Literacy Rate (%)', tickfont: { size: 12, color: '#555' } },
+                    paper_bgcolor: 'rgba(255,255,255,0)',
+                    plot_bgcolor: 'rgba(245,245,245,0.8)',
+                });
+            })
+            .catch(error => console.error('Error fetching chart data:', error));
+    </script>
+
+</body>
+
+</html>
