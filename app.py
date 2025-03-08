@@ -25,11 +25,13 @@ if "show_analysis" not in st.session_state:
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
 
+    # ✅ Ensure unique column names (Fix for duplicate column issue)
+    df.columns = pd.Index(df.columns).to_series().where(~df.columns.duplicated(), df.columns + '_dup')
+
     # Sidebar buttons
     if st.sidebar.button("Show Analysis"):
         st.snow()  # Fun effect
         st.session_state.show_analysis = True  
-
 
     show_comparison = st.sidebar.button("Show Comparison")
 
@@ -37,18 +39,18 @@ if uploaded_file is not None:
         st.write("### Uploaded Dataset")
         st.dataframe(df)
 
-        # Handling missing values
+        # ✅ Handling missing values
         for col in ["Lakh of Population per Institution (University)", 
                     "Lakh of Population per Institution (College)", 
                     "Lakh of Population per Institution (Technical)"]:
             if col in df.columns:
                 df[col] = df[col].fillna(df[col].median())
 
-        # Remove unwanted column if present
+        # ✅ Remove unwanted column if present
         if "Unnamed: 7" in df.columns:
             df.drop(columns=["Unnamed: 7"], inplace=True)
 
-        # Convert to numeric (if needed)
+        # ✅ Convert to numeric (if needed)
         df_numeric = df.select_dtypes(include=['number'])
 
         # ✅ State-wise Literacy Rate using Plotly
@@ -62,9 +64,9 @@ if uploaded_file is not None:
                             color_continuous_scale="plasma")
 
             fig2.update_layout(title="State-wise Literacy Rate Distribution")
-            st.plotly_chart(fig2)  # ✅ Use this instead of fig2.show()
+            st.plotly_chart(fig2)
 
-        # ✅ Choropleth Map (Ensure correct GeoJSON)
+        # ✅ Choropleth Map
         st.write("### State-wise Literacy Rate in India (Choropleth Map)")
         geojson_url = "https://raw.githubusercontent.com/geohacker/india/master/state/india_telengana.geojson"
 
@@ -78,9 +80,9 @@ if uploaded_file is not None:
 
             fig.update_geos(fitbounds="locations", visible=False)
             fig.update_layout(title="State-wise Literacy Rate in India")
-            st.plotly_chart(fig)  # ✅ Use this instead of fig.show()
+            st.plotly_chart(fig)
 
-        # ✅ Scatter plot using Plotly
+        # ✅ Scatter plot using Plotly (Fixed duplicate column error)
         st.write("### Scatter Plot with Regression Line")
         if not df_numeric.empty:
             feature_x = st.selectbox("Select X-axis Feature", df_numeric.columns, key="x_axis")
@@ -89,9 +91,9 @@ if uploaded_file is not None:
             fig3 = px.scatter(df, x=feature_x, y=feature_y, trendline="ols",
                               labels={feature_x: feature_x, feature_y: feature_y})
             fig3.update_layout(title=f"{feature_x} vs {feature_y} with Regression Line")
-            st.plotly_chart(fig3)  # ✅ Display using st.plotly_chart
+            st.plotly_chart(fig3)
 
-        # ✅ Feedback Form
+      
         st.write("## Share Your Feedback")
 
         full_name = st.text_input("Full Name")
@@ -105,7 +107,6 @@ if uploaded_file is not None:
                     "Email": email,
                     "Feedback": feedback_text
                 }
-
                 collection.insert_one(feedback_data) 
                 st.success("Thank you for your feedback!")
             else:
@@ -127,7 +128,8 @@ if uploaded_file is not None:
             ax.set_ylabel('State')
             st.pyplot(fig)
 
-        if "Pupil Teacher Ratio" in df.columns and "Literacy Rate" in df.columns:
+       
+        if "Pupil Teacher Ratio" in df.columns and "State" in df.columns:
             sorted_ratio_df = df.sort_values(by='Pupil Teacher Ratio')
             best_ratio_states = sorted_ratio_df.head(5)
             worst_ratio_states = sorted_ratio_df.tail(5)
@@ -139,9 +141,11 @@ if uploaded_file is not None:
             ax.set_xlabel('Pupil-Teacher Ratio')
             ax.set_ylabel('State')
             st.pyplot(fig)
+        else:
+            st.warning("⚠️ 'Pupil Teacher Ratio' column not found in the dataset!")
 
 else:
-    # Show animation when no file is uploaded
+
     url = "https://assets9.lottiefiles.com/packages/lf20_M9p23l.json"
     lottie_json = requests.get(url).json()
     st_lottie(lottie_json, loop=True)
