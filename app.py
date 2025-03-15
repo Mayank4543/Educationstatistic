@@ -10,7 +10,6 @@ import seaborn as sns
 # Set page config
 st.set_page_config(layout='wide', page_title='Education Statistics')
 st.sidebar.title("Education Statistics")
-
 # MongoDB Connection
 client = MongoClient("mongodb://localhost:27017/")
 db = client["feedback_db"]
