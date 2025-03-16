@@ -23,13 +23,11 @@ if "show_analysis" not in st.session_state:
 
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
-
-    # ✅ Ensure unique column names (Fix for duplicate column issue)
     df.columns = pd.Index(df.columns).to_series().where(~df.columns.duplicated(), df.columns + '_dup')
 
     # Sidebar buttons
     if st.sidebar.button("Show Analysis"):
-        st.snow()  # Fun effect
+        st.snow()  
         st.session_state.show_analysis = True  
 
     show_comparison = st.sidebar.button("Show Comparison")
