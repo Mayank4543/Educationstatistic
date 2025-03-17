@@ -35,7 +35,6 @@ if uploaded_file is not None:
     if st.session_state.show_analysis:
         st.write("### Uploaded Dataset")
         st.dataframe(df)
-
         # ✅ Handling missing values
         for col in ["Lakh of Population per Institution (University)", 
                     "Lakh of Population per Institution (College)", 
