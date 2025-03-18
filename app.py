@@ -77,7 +77,6 @@ if uploaded_file is not None:
             fig.update_geos(fitbounds="locations", visible=False)
             fig.update_layout(title="State-wise Literacy Rate in India")
             st.plotly_chart(fig)
-
         # ✅ Scatter plot using Plotly (Fixed duplicate column error)
         st.write("### Scatter Plot with Regression Line")
         if not df_numeric.empty:
