@@ -61,7 +61,6 @@ if uploaded_file is not None:
 
             fig2.update_layout(title="State-wise Literacy Rate Distribution")
             st.plotly_chart(fig2)
-
         # ✅ Choropleth Map
         st.write("### State-wise Literacy Rate in India (Choropleth Map)")
         geojson_url = "https://raw.githubusercontent.com/geohacker/india/master/state/india_telengana.geojson"
