@@ -85,9 +85,7 @@ if uploaded_file is not None:
             fig3 = px.scatter(df, x=feature_x, y=feature_y, trendline="ols",
                               labels={feature_x: feature_x, feature_y: feature_y})
             fig3.update_layout(title=f"{feature_x} vs {feature_y} with Regression Line")
-            st.plotly_chart(fig3)
-
-      
+            st.plotly_chart(fig3)  
         st.write("## Share Your Feedback")
 
         full_name = st.text_input("Full Name")
