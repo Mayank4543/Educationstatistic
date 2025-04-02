@@ -6,8 +6,6 @@ from pymongo import MongoClient
 from streamlit_lottie import st_lottie
 import matplotlib.pyplot as plt
 import seaborn as sns
-
-# Set page config
 st.set_page_config(layout='wide', page_title='Education Statistics')
 st.sidebar.title("Education Statistics")
 # MongoDB Connection
