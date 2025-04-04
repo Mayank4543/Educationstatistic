@@ -15,7 +15,7 @@ collection = db["feedback_collection"]
 
 uploaded_file = st.sidebar.file_uploader("Upload your dataset (CSV format)")
 
-# ✅ Session state variable to track whether analysis is shown
+
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
 
