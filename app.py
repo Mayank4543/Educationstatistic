@@ -12,9 +12,7 @@ st.sidebar.title("Education Statistics")
 client = MongoClient("mongodb://localhost:27017/")
 db = client["feedback_db"]
 collection = db["feedback_collection"]
-
 uploaded_file = st.sidebar.file_uploader("Upload your dataset (CSV format)")
-
 
 if "show_analysis" not in st.session_state:
     st.session_state.show_analysis = False
